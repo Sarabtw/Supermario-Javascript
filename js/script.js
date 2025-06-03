@@ -20,7 +20,7 @@ function renderLives() {
   for (let i = 0; i < 3; i++) {
     const heart = document.createElement('span');
     heart.classList.add('heart');
-    if (i >= lives) heart.classList.add('lost'); // corações cinzas para vidas perdidas
+    if (i >= lives) heart.classList.add('lost'); 
     livesElement.appendChild(heart);
   }
 }
@@ -42,7 +42,7 @@ const resetPipePosition = () => {
   pipe.style.animation = 'none';
   pipe.style.right = '-80px';
 
-  // força reflow para reiniciar animação
+
   void pipe.offsetWidth;
 
   pipe.style.animation = 'pipe-animation 2s infinite linear';
@@ -79,10 +79,10 @@ const handleCollision = () => {
       highScoreElement.textContent = highScore;
     }
   } else {
-    // Se ainda tem vidas, reinicia posição do cano
+   
     resetPipePosition();
 
-    // Pequeno efeito visual para indicar perda de vida
+    
     mario.style.filter = 'brightness(0.7)';
     setTimeout(() => {
       mario.style.filter = 'none';
@@ -110,11 +110,11 @@ const scoreInterval = setInterval(() => {
 
 document.addEventListener('keydown', jump);
 
-// Toca música de fundo assim que a página carregar
+
 window.addEventListener('load', () => {
   bgMusic.volume = 0.5;
   bgMusic.play().catch(() => {
-    // caso o autoplay seja bloqueado, espera interação do usuário
+   
     document.addEventListener('keydown', () => {
       if (bgMusic.paused) bgMusic.play();
     }, { once: true });

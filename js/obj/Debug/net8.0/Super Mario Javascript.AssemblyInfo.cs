@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Super Mario Javascript")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b72678263f09d62d9125b00b88c74e5513b42d7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+19e48465c93ef1d61d6a01088d062ad8293ead7f")]
 [assembly: System.Reflection.AssemblyProductAttribute("Super Mario Javascript")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Super Mario Javascript")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
