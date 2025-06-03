@@ -4,14 +4,18 @@
   box-sizing: border-box;
 }
 
+body {
+  background: #000;
+}
+
 .game-board {
   width: 100%;
   height: 500px;
-  border-bottom: 15px solid green;
   position: relative;
   margin: 0 auto;
   overflow: hidden;
   background: linear-gradient(rgb(81, 150, 206), white);
+  border-bottom: 15px solid green;
 }
 
 .pipe {
@@ -19,12 +23,14 @@
   bottom: 0;
   width: 80px;
   animation: pipe-animation 2s infinite linear;
+  z-index: 2;
 }
 
 .mario {
   width: 150px;
   position: absolute;
   bottom: 0;
+  z-index: 3;
 }
 
 .jump {
@@ -35,9 +41,34 @@
   width: 550px;
   position: absolute;
   animation: clouds-animation 20s linear infinite;
+  z-index: 0;
+}
+
+.enemy {
+  width: 80px;
+  position: absolute;
+  bottom: 0;
+  animation: enemy-animation 4s linear forwards;
+  z-index: 2;
 }
 
 @keyframes pipe-animation {
+  from { right: -80px; }
+  to { right: 100%; }
+}
+
+@keyframes jump {
+  0% { bottom: 0; }
+  40%, 50%, 60% { bottom: 180px; }
+  100% { bottom: 0; }
+}
+
+@keyframes clouds-animation {
+  from { right: -550px; }
+  to { right: 100%; }
+}
+
+@keyframes enemy-animation {
   from {
     right: -80px;
   }
@@ -46,26 +77,6 @@
   }
 }
 
-@keyframes jump {
-  0% {
-    bottom: 0;
-  }
-  40%, 50%, 60% {
-    bottom: 180px;
-  }
-  100% {
-    bottom: 0;
-  }
-}
-
-@keyframes clouds-animation {
-  from {
-    right: -550px;
-  }
-  to {
-    right: 100%;
-  }
-}
 
 .hud {
   position: absolute;
@@ -78,21 +89,19 @@
   z-index: 10;
 }
 
-
 #lives {
   display: flex;
-  gap: 20px; 
+  gap: 20px;
   margin-top: 10px;
   align-items: center;
 }
 
 .heart {
-  width: 16px; 
+  width: 16px;
   height: 16px;
   background: red;
   position: relative;
   transform: rotate(-45deg);
-  cursor: default;
   filter: drop-shadow(0 0 1px #900);
 }
 
@@ -108,14 +117,8 @@
   left: 0;
 }
 
-.heart::before {
-  left: 8px;
-}
-
-.heart::after {
-  top: -8px;
-}
-
+.heart::before { left: 8px; }
+.heart::after { top: -8px; }
 
 .heart.lost {
   background: #bbb;
@@ -125,4 +128,19 @@
 .heart.lost::before,
 .heart.lost::after {
   background: #bbb;
+}
+
+.coin {
+  width: 75px;
+  height: 75px;
+  position: absolute;
+  bottom: 120px;
+  animation: coin-animation 4s linear forwards;
+  z-index: 5;
+  image-rendering: pixelated;
+}
+
+@keyframes coin-animation {
+  from { right: -40px; }
+  to { right: 100%; }
 }
