@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mario Jump - Início</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            min-height: 100vh;
+            min-width: 100vw;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #start-gif {
+            width: 100vw;
+            height: 100vh;
+            max-width: 100vw;
+            max-height: 100vh;
+            object-fit: cover;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            margin: 0;
+            image-rendering: pixelated;
+        }
+
+        #start-btn {
+            position: fixed;
+            top: 80%;
+            left: 50%;
+            z-index: 2;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            padding: 1rem 2.5rem;
+            background: #e63946;
+            color: #fff700;
+            border: 4px solid #ffd700;
+            border-radius: 16px;
+            font-family: 'Press Start 2P', 'Arial Black', Arial, sans-serif;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0 #900, 0 2px 8px #000;
+            box-shadow: 0 6px 0 #900, 0 8px 16px #0008;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        #start-btn:hover {
+            background: #b71c1c;
+            /* Apenas aumenta o tamanho, sem mover para o lado */
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <img src="img/Video mario.gif" alt="Tela Inicial Mario" id="start-gif">
+    <button id="start-btn">Começar</button>
+
+    <script>
+        document.getElementById('start-btn').addEventListener('click', function () {
+            window.location.href = "Index.html";
+        });
+    </script>
+</body>
+
+</html>

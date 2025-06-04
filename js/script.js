@@ -107,12 +107,6 @@ function createCoin() {
   });
 }
 
-coinInterval = setInterval(() => {
-  if (!isGameOver) {
-    createCoin();
-  }
-}, 2000);
-
 function isPipeNear() {
   const pipePosition = pipe.offsetLeft;
   return pipePosition > 0 && pipePosition < 200;
