@@ -1,26 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mario Jump</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="js/script.js" defer></script>
 </head>
+
 <body>
   <audio id="bg-music" src="audio/fundo-mario.mp3" loop autoplay></audio>
 
   <div class="game-board">
-    <div class="hud">
-      <p>Pontos: <span id="score">0</span></p>
-      <p>Recorde: <span id="high-score">0</span></p>
-      <p>Moedas: <span id="coin-count">0</span></p>
-      <div id="lives"></div>
+    <div class="container">
+      <div class="hud">
+        <div class="hud-left">
+          <p>Pontos: <span id="score">0</span></p>
+        </div>
+        <div class="hud-center">
+          <p>Recorde: <span id="high-score">0</span></p>
+          <div id="lives"></div>
+        </div>
+        <div class="hud-right">
+          <p>Moedas: <span id="coin-count">0</span></p>
+        </div>
+      </div>
+
     </div>
+
+    <img id="gameover-img" src="img/gameover.png" alt="Game Over" style="display:none;" />
+    <button id="restart-btn">Reiniciar</button>
 
     <img src="img/clouds.png" class="clouds" alt="Clouds" />
     <img src="img/mario.gif" class="mario" alt="Mario" />
     <img src="img/pipe.png" class="pipe" alt="Pipe" />
+
+    <div class="ground"></div>
   </div>
 </body>
+
 </html>

@@ -7,6 +7,7 @@ const highScoreElement = document.getElementById('high-score');
 const coinCountElement = document.getElementById('coin-count');
 const livesElement = document.getElementById('lives');
 const bgMusic = document.getElementById('bg-music');
+const restartBtn = document.getElementById('restart-btn');
 
 const jumpSound = new Audio('audio/jump-mario.mp3');
 jumpSound.volume = 0.1;
@@ -20,6 +21,8 @@ let coinCount = 0;
 let lives = 3;
 let isGameOver = false;
 let coinInterval;
+let loop;
+let scoreInterval;
 
 highScoreElement.textContent = highScore;
 coinCountElement.textContent = coinCount;
@@ -64,7 +67,6 @@ const handleCollision = () => {
     isGameOver = true;
 
     pipe.style.animation = 'none';
-    pipe.style.left = `${pipe.offsetLeft}px`;
 
     mario.style.animation = 'none';
     mario.style.bottom = window.getComputedStyle(mario).bottom;
@@ -76,9 +78,10 @@ const handleCollision = () => {
     gameOverSound.play();
     bgMusic.pause();
 
-    clearInterval(loop);
-    clearInterval(scoreInterval);
     clearInterval(coinInterval);
+
+    restartBtn.style.display = 'block';
+    document.getElementById('gameover-img').style.display = 'block';
   } else {
     resetPipePosition();
     mario.style.filter = 'brightness(0.7)';
@@ -134,33 +137,35 @@ function createEnemy() {
 function spawnEnemyRandomly() {
   if (isGameOver) return;
 
-  const randomTime = Math.random() * 2000 + 3000;
+  const randomTime = Math.random() * 4000 + 7000; // entre 4s e 7s
   setTimeout(() => {
     createEnemy();
     spawnEnemyRandomly();
   }, randomTime);
 }
-spawnEnemyRandomly();
 
-const loop = setInterval(() => {
+setInterval(() => {
   if (isGameOver) return;
 
   const pipePosition = pipe.offsetLeft;
   const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
 
-  if (pipePosition <= 120 && pipePosition > 0 && marioPosition < 80) {
+  if (pipePosition <= 120 && pipePosition > 0 && marioPosition < 150) {
     handleCollision();
   }
 
   document.querySelectorAll('.coin').forEach((coin) => {
-    const coinPosition = coin.offsetLeft;
+    const coinRect = coin.getBoundingClientRect();
+    const marioRect = mario.getBoundingClientRect();
 
-    if (
-      coinPosition <= 120 &&
-      coinPosition > 0 &&
-      marioPosition > 80 &&
-      !coin.collected
-    ) {
+    // Verifica colisão real (horizontal e vertical)
+    const isColliding =
+      marioRect.right > coinRect.left &&
+      marioRect.left < coinRect.right &&
+      marioRect.bottom > coinRect.top &&
+      marioRect.top < coinRect.bottom;
+
+    if (isColliding && !coin.collected) {
       coin.collected = true;
       coin.remove();
       coinSound.currentTime = 0;
@@ -176,7 +181,7 @@ const loop = setInterval(() => {
     if (
       enemyPosition <= 120 &&
       enemyPosition > 0 &&
-      marioPosition < 80
+      marioPosition < 150
     ) {
       handleCollision();
       enemy.remove();
@@ -184,20 +189,118 @@ const loop = setInterval(() => {
   });
 }, 10);
 
-const scoreInterval = setInterval(() => {
-  if (!isGameOver) {
-    score++;
-    scoreElement.textContent = score;
-  }
-}, 500);
+function restartGame() {
+  score = 0;
+  coinCount = 0;
+  lives = 3;
+  isGameOver = false;
+
+  scoreElement.textContent = score;
+  coinCountElement.textContent = coinCount;
+  renderLives();
+
+  mario.src = "img/mario.gif";
+  mario.style.width = '150px';
+  mario.style.marginLeft = '0px';
+  mario.style.bottom = '110px';
+
+  document.querySelectorAll('.enemy').forEach(e => e.remove());
+  document.querySelectorAll('.coin').forEach(c => c.remove());
+
+  pipe.style.animation = 'pipe-animation 2s infinite linear';
+  pipe.style.right = '-80px';
+
+  restartBtn.style.display = 'none';
+  document.getElementById('gameover-img').style.display = 'none';
+
+  // LIMPE OS INTERVALOS ANTES DE CRIAR NOVOS
+  clearInterval(loop);
+  clearInterval(scoreInterval);
+  clearInterval(coinInterval);
+
+  // INICIE OS INTERVALOS DE MOEDA E INIMIGO AQUI:
+  coinInterval = setInterval(() => {
+    if (!isGameOver) {
+      createCoin();
+    }
+  }, 2000);
+
+  spawnEnemyRandomly();
+
+  loop = setInterval(() => {
+    if (isGameOver) return;
+
+    const pipePosition = pipe.offsetLeft;
+    const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
+
+    if (pipePosition <= 120 && pipePosition > 0 && marioPosition < 150) {
+      handleCollision();
+    }
+
+    document.querySelectorAll('.coin').forEach((coin) => {
+      const coinRect = coin.getBoundingClientRect();
+      const marioRect = mario.getBoundingClientRect();
+
+      const isColliding =
+        marioRect.right > coinRect.left &&
+        marioRect.left < coinRect.right &&
+        marioRect.bottom > coinRect.top &&
+        marioRect.top < coinRect.bottom;
+
+      if (isColliding && !coin.collected) {
+        coin.collected = true;
+        coin.remove();
+        coinSound.currentTime = 0;
+        coinSound.play();
+        coinCount++;
+        coinCountElement.textContent = coinCount;
+      }
+    });
+
+    document.querySelectorAll('.enemy').forEach((enemy) => {
+      const enemyPosition = enemy.offsetLeft;
+
+      if (
+        enemyPosition <= 120 &&
+        enemyPosition > 0 &&
+        marioPosition < 150
+      ) {
+        handleCollision();
+        enemy.remove();
+      }
+    });
+  }, 10);
+
+  scoreInterval = setInterval(() => {
+    if (!isGameOver) {
+      score++;
+      scoreElement.textContent = score;
+
+      // Atualiza o recorde se o score ultrapassar
+      if (score > highScore) {
+        highScore = score;
+        highScoreElement.textContent = highScore;
+        localStorage.setItem('highScore', highScore);
+      }
+    }
+  }, 500);
+
+  bgMusic.currentTime = 0;
+  bgMusic.play();
+}
+
+restartBtn.addEventListener('click', () => {
+  location.reload();
+});
 
 document.addEventListener('keydown', jump);
 
 window.addEventListener('load', () => {
-  bgMusic.volume = 0.1;
+  bgMusic.volume = 0.2;
   bgMusic.play().catch(() => {
     document.addEventListener('keydown', () => {
       if (bgMusic.paused) bgMusic.play();
     }, { once: true });
   });
+  restartGame(); // Inicia o jogo corretamente ao carregar
 });
