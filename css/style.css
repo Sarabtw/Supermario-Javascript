@@ -210,8 +210,6 @@ body {
   width: 75px;
   height: 75px;
   position: absolute;
-  bottom: 300px;
-  /* moedas acima do solo */
   animation: coin-animation 4s linear forwards;
   z-index: 5;
   image-rendering: pixelated;
@@ -221,11 +219,11 @@ body {
   from {
     right: -40px;
   }
-
   to {
     right: 100%;
   }
 }
+
 
 #restart-btn {
   display: none;

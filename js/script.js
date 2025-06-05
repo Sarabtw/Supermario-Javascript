@@ -98,6 +98,13 @@ function createCoin() {
   coin.src = 'img/coin.png';
   coin.classList.add('coin');
   coin.style.right = '-40px';
+
+  // Posiciona a moeda entre 250px e 500px do chão (no céu)
+  const minBottom = 250;
+  const maxBottom = 500;
+  const randomBottom = Math.floor(Math.random() * (maxBottom - minBottom + 1)) + minBottom;
+  coin.style.bottom = `${randomBottom}px`;
+
   gameBoard.appendChild(coin);
 
   coin.collected = false;
@@ -106,6 +113,7 @@ function createCoin() {
     if (!coin.collected) coin.remove();
   });
 }
+
 
 function isPipeNear() {
   const pipePosition = pipe.offsetLeft;
