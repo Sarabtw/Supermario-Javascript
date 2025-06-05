@@ -99,9 +99,9 @@ function createCoin() {
   coin.classList.add('coin');
   coin.style.right = '-40px';
 
-  // Posiciona a moeda entre 250px e 500px do chão (no céu)
-  const minBottom = 250;
-  const maxBottom = 500;
+  // Posiciona a moeda entre 120px e 260px do chão (mais baixo)
+  const minBottom = 120;
+  const maxBottom = 260;
   const randomBottom = Math.floor(Math.random() * (maxBottom - minBottom + 1)) + minBottom;
   coin.style.bottom = `${randomBottom}px`;
 
@@ -139,7 +139,7 @@ function createEnemy() {
 function spawnEnemyRandomly() {
   if (isGameOver) return;
 
-  const randomTime = Math.random() * 4000 + 7000; // entre 4s e 7s
+  const randomTime = Math.random() * 4000 + 5000; // entre 4s e 7s
   setTimeout(() => {
     createEnemy();
     spawnEnemyRandomly();
